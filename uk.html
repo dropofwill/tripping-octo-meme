@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+	<style>
+		.container {
+			width: 60%;
+			margin: 0 auto;
+			background: azure;
+		}
+		svg { height: 65%; }
+	</style>
+</head>
+<body>
+	<div class="container">
+
+	</div>
+
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="http://d3js.org/topojson.v1.min.js"></script>
+	<script>
+		
+	var width = 960,
+			height = 1160;
+
+	var projection = d3.geo.albers()
+				.center([0, 55.4])
+				.rotate([4.4, 0])
+				.parallels([50, 60])
+				.scale(6000)
+				.translate([width / 2, height /2]);
+
+	var path = d3.geo.path()
+				.projection(projection);
+
+	var zoom = d3.behavior.zoom()
+		.translate([0,0])
+    .scale(1)
+    .scaleExtent([1, 8])
+    .translate([width / 2, height / 2])
+    .on("zoom", zoomed);
+
+	var svg = d3.select(".container").append("svg")
+							.attr("viewBox", "0 0 " + width + " " + height )
+							.attr("preserveAspectRatio", "xMidYMid meet");
+	
+	svg.call(zoom)
+		.call(zoom.event)
+
+	function zoomed() {
+		console.log("Zoom zoom");
+		svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+	}
+
+	function clicked() {
+		console.log("Clicked " + d);
+	}
+	
+	function chooseColor(ith, colors) {
+		var colors = typeof colors !== 'undefined' ? colors : ["#CDA274", "#BCBAC8", "#A6CF9C", "#776D62","#D0C98C", "#5B584B", "#C2BCC8", "#BE8F7E", "#A1C9AC"] 
+		i = ith%colors.length
+		console.log(i, ith, colors[i]);
+		return colors[i];
+	}
+
+
+	d3.json("data/uk_simplified/uk.json", function(error, uk) {
+		if (error) return console.error(error);
+		console.log(uk);
+
+		var subunits = topojson.feature(uk, uk.objects.uk_subunits).features;
+		console.log(subunits);
+		
+		var i = Math.floor(Math.random() * 10) + 1;
+
+		svg.append("path")
+			.datum(topojson.feature(uk, uk.objects.uk_subunits))
+			.attr("stroke", "#ccc")
+			.attr("fill", "#555")
+			.attr("stroke-width", 10)
+			.attr("stroke-linejoin", "round")
+			.attr("d", path);
+
+		svg.selectAll(".subunit")
+				.data(subunits)
+			.enter().append("path")
+				.attr("class", function(d) { return "subunit " + d.id; })
+				.attr("fill", "#f6f4f2")
+				//.attr("fill", function() { i++; return chooseColor(i); })
+				.attr("stroke", "#333")
+				//.attr("stroke", "#fff")
+				.attr("stroke-width", 1)
+				.attr("stroke-linejoin", "round")
+				.attr("d", path)
+				.on("click", clicked);
+	});
+	</script>
+</body>
+</html>
