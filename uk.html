@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
 <head>
 	<style>
 		.container {
-			width: 60%;
+			width: 90%;
 			margin: 0 auto;
 			background: azure;
 		}
-		svg { height: 65%; }
+		svg {
+			-webkit-tap-highlight-color: rgba(0,0,0,0);
+			height: 100%;
+		}
 
 		.background {
 			fill: none;
@@ -16,7 +20,12 @@
 		}
 
 		.subunit {
+			-ms-touch-action: none;
 			cursor: pointer;
+		}
+		
+		.subunit.hover {
+			fill: #C1CEBE;
 		}
 
 		.subunit.active {
@@ -29,14 +38,20 @@
 
 	</div>
 
+	<script src="fastclick.js"></script>
 	<script src="http://d3js.org/d3.v3.min.js"></script>
 	<script src="http://d3js.org/topojson.v1.min.js"></script>
 	<script>
-		
+
+	window.addEventListener('load', function() {
+    FastClick.attach(document.body);
+	}, false);
+
 	// Set Aspect Ratio in pixels
 	var width = 960,
 			height = 1160
-			active = d3.select(null);
+			active = d3.select(null)
+			hover = d3.select(null);
 
 	// The Map projection settings
 	var projection = d3.geo.albers()
@@ -114,7 +129,9 @@
 				//.attr("stroke", "#fff")
 				.attr("stroke-width", 1)
 				.attr("stroke-linejoin", "round")
-				.on("click", clicked);
+				.on("click", clicked)
+				.on("mouseover", mouseover)
+				.on("mouseout", mouseout);
 	});
 
 	function zoomed() {
@@ -150,6 +167,15 @@
 		svg.transition()
 				.duration(750)
 				.call(zoom.translate([0, 0]).scale(1).event);
+	}
+
+	function mouseover(d) {
+		hover.classed("hover", false);
+		hover = d3.select(this).classed("hover", true);
+	}
+	
+	function mouseout(d) {
+		hover.classed("hover", false);
 	}
 	
 	function stopped() {
