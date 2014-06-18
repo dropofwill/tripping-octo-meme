@@ -35,7 +35,10 @@
 </head>
 <body>
 	<div class="container">
-
+		<button id="reset">Reset</button>
+		<button id="zoom_in">+</button>
+		<button id="zoom_out">-</button>
+		<button id="lock">Lock View</button>
 	</div>
 
 	<script src="fastclick.js"></script>
@@ -134,6 +137,9 @@
 				.on("mouseout", mouseout);
 	});
 
+	d3.select("#reset").on("click", reset);
+	d3.select("#lock").on("click", lock);
+
 	function zoomed() {
 		console.log("Zoom zoom: " + d3.event.translate + " " + d3.event.scale);
 		svg.selectAll("path")
@@ -167,6 +173,10 @@
 		svg.transition()
 				.duration(750)
 				.call(zoom.translate([0, 0]).scale(1).event);
+	}
+
+	function lock() {
+		svg.on(".zoom", null);
 	}
 
 	function mouseover(d) {
