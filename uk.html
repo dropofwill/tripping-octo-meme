@@ -31,6 +31,33 @@
 		.subunit.active {
 			fill: #A6CF9C;
 		}
+
+		button {
+			background-color: rgba(118,183,138,1);
+			border: none;
+			padding: 10px;
+			position: relative;
+			font-size: 12px;
+			color: #fff;
+			border-radius: 8px;
+			box-shadow: 3px 3px 0px rgba(118,183,138,0.3);
+			transition: 0.1s;
+			outline: 0;
+		}
+
+		button:hover,
+		button:focus {
+			border:none;
+			outline: 0;
+		}
+
+		button:active {
+			box-shadow: 0 0 0 0 rgba(0,0,0,0.3);
+			-webkit-transform: translate(1px, 4px);
+				-ms-transform: translate(1px, 4px);
+				transform: translate(1px, 4px);
+			outline: 0;
+		 }
 	</style>
 </head>
 <body>
@@ -38,7 +65,7 @@
 		<button id="reset">Reset</button>
 		<button id="zoom_in">+</button>
 		<button id="zoom_out">-</button>
-		<button id="lock">Lock View</button>
+		<button id="lock">Lock Zoom Gestures</button>
 	</div>
 
 	<script src="fastclick.js"></script>
@@ -54,7 +81,9 @@
 	var width = 960,
 			height = 1160
 			active = d3.select(null)
-			hover = d3.select(null);
+			hover = d3.select(null)
+			locked = false
+			lock_btn = document.getElementById("lock");
 
 	// The Map projection settings
 	var projection = d3.geo.albers()
@@ -79,6 +108,7 @@
 	var svg = d3.select(".container").append("svg")
 		.attr("viewBox", "0 0 " + width + " " + height )
 		.attr("preserveAspectRatio", "xMidYMid meet")
+		.attr("id", "svg--map")
 		.on("click", stopped, true);
 
 	// Apply the zoom settings to the root as gestures and events
@@ -139,9 +169,11 @@
 
 	d3.select("#reset").on("click", reset);
 	d3.select("#lock").on("click", lock);
+	d3.select("#zoom_in").on("click", function() { zoomDir("in"); });
+	d3.select("#zoom_out").on("click", function() { zoomDir("out"); });
 
 	function zoomed() {
-		console.log("Zoom zoom: " + d3.event.translate + " " + d3.event.scale);
+		//console.log("Zoom zoom: " + d3.event.translate + " " + d3.event.scale);
 		svg.selectAll("path")
 			.attr("transform", "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")");
 	}
@@ -176,7 +208,38 @@
 	}
 
 	function lock() {
-		svg.on(".zoom", null);
+		if (!locked) {
+			locked = true;
+			lock_btn.innerHTML = "Unlock Zoom Gestures";
+			svg.on(".zoom", null);
+		}
+		else {
+			locked = false;
+			lock_btn.innerHTML = "Lock Zoom Gestures";
+			svg.call(zoom);
+		}
+	}
+
+	function zoomDir(dir) {
+		h = parseFloat(document.getElementById("svg--map").clientHeight);
+		w = parseFloat(document.getElementById("svg--map").clientWidth);
+
+		console.log(dir, h, w);
+
+		if (dir == "in") {
+			var newZoom = zoom.scale() * 1.5;
+			var newX = ((zoom.translate()[0] - (width / 2)) * 1.5) + width / 2;
+			var newY = ((zoom.translate()[1] - (height / 2)) * 1.5) + height / 2;
+		}
+		else {
+			var newZoom = zoom.scale() * 0.75; 
+			var newX = ((zoom.translate()[0] - (width / 2)) * 0.75) + width / 2;
+			var newY = ((zoom.translate()[1] - (height / 2)) * 0.75) + height / 2;
+		}
+
+		svg.transition()
+				.duration(750)
+				.call(zoom.translate([newX, newY]).scale(newZoom).event);
 	}
 
 	function mouseover(d) {
