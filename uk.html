@@ -66,9 +66,13 @@
 		<button id="zoom_in">+</button>
 		<button id="zoom_out">-</button>
 		<button id="lock">Lock Zoom Gestures</button>
+		<button id="toggle">Toggle Map/List</button>
+		<select id="selector" name="selector">
+			<option disabled selected>Select a Country</option>
+		</select>
 	</div>
 
-	<script src="fastclick.js"></script>
+	<script src="scripts/fastclick.js"></script>
 	<script src="http://d3js.org/d3.v3.min.js"></script>
 	<script src="http://d3js.org/topojson.v1.min.js"></script>
 	<script>
@@ -79,11 +83,14 @@
 
 	// Set Aspect Ratio in pixels
 	var width = 960,
-			height = 1160
-			active = d3.select(null)
-			hover = d3.select(null)
-			locked = false
-			lock_btn = document.getElementById("lock");
+			height = 1160,
+			active = d3.select(null),
+			hover = d3.select(null),
+			locked = false,
+			listSubunits = [],
+			lock_btn = document.getElementById("lock"),
+			toggle_btn = document.getElementById("toggle"),
+			countrySelector = document.getElementById("selector");
 
 	// The Map projection settings
 	var projection = d3.geo.albers()
@@ -101,7 +108,7 @@
 	var zoom = d3.behavior.zoom()
 		.scale(1)
 		.translate([0,0])
-    .scaleExtent([1, 3])
+    .scaleExtent([1, 6])
     .on("zoom", zoomed);
 
 	// Add the svg to the .container element, stop event propogation
@@ -144,7 +151,7 @@
 			.datum(unit)
 				.attr("d", path)
 				.attr("stroke", "#ccc")
-				.attr("fill", "#555")
+				.attr("fill", "#ccc")
 				.attr("stroke-width", 10)
 				.attr("stroke-linejoin", "round");
 
@@ -153,8 +160,14 @@
 			.enter().append("path")
 				.attr("d", path)
 				.attr("class", function(d) { 
-						var name = d.properties.name.replace(/\.+\ +/,"")
-						console.log(name); 
+						var displayName = d.properties.name;
+						var name = d.properties.name.replace(/\.+\ +/,"");
+						listSubunits.push(name);
+						var el = document.createElement("option");
+						el.setAttribute("value", name);
+						el.textContent = displayName;
+						countrySelector.appendChild(el);
+	
 						return "subunit " + name; })
 				.attr("fill", "#f6f4f2")
 				//.attr("fill", function() { i++; return chooseColor(i); })
@@ -171,15 +184,26 @@
 	d3.select("#lock").on("click", lock);
 	d3.select("#zoom_in").on("click", function() { zoomDir("in"); });
 	d3.select("#zoom_out").on("click", function() { zoomDir("out"); });
+	countrySelector.addEventListener("change", function(e) { 
+			var classSelected = "." + this.options[this.selectedIndex].value.toString();
+			var d = d3.select(classSelected);
+			d.each(clicked);
+	});
+	toggle_btn.addEventListener("click", function(e) {
+			var d = d3.selectAll(".subunit");
+			d.each(toggle);
+	});
 
 	function zoomed() {
-		//console.log("Zoom zoom: " + d3.event.translate + " " + d3.event.scale);
 		svg.selectAll("path")
 			.attr("transform", "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")");
+
+		svg.selectAll(".subunit")
+			.style("stroke-width", 1/ d3.event.scale + "px");
 	}
 
+	// This is called on click and onchange of the select box
 	function clicked(d) {
-		console.log("Clicked " + d);
 
 		if (active.node() === this) return reset();
 		active.classed("active", false);
@@ -196,6 +220,12 @@
 		svg.transition()
 			.duration(1000)
 			.call(zoom.translate(translate).scale(scale).event);
+
+		// Account for the select a country item
+		var name = d.properties.name.replace(/\.+\ +/,"")
+		var index = listSubunits.indexOf(name) + 1;
+		// Keep the select box up to date, even if navigating by click
+		countrySelector.options[index].selected = true;
 	}
 
 	function reset() {
@@ -205,6 +235,34 @@
 		svg.transition()
 				.duration(750)
 				.call(zoom.translate([0, 0]).scale(1).event);
+
+		countrySelector.options[0].selected = true;
+	}
+
+	function toggle(d) {
+		var name = d.properties.name.replace(/\.+\ +/,"")
+		var index = listSubunits.indexOf(name);
+		var offset = index * 1500;
+
+
+		console.log(offset);	
+		d3.select(this)
+			.transition()
+			.attr("transform", function(d) {
+				var bbox = this.getBBox(),
+						scaleRatio,
+						dX,
+						dY;
+				
+				scaleRatio =  100 / bbox.height;
+				dX = -1 * bbox.x;
+				//dY = (-1 * bbox.y);
+				dY = (-1 * bbox.y) + (offset * scaleRatio);
+				//dY = offset;
+				console.log(scaleRatio, dX, dY, offset / bbox.height);
+
+				return "scale(" + scaleRatio + ") translate(" + dX + "," + dY + ")";
+			});
 	}
 
 	function lock() {
@@ -223,8 +281,6 @@
 	function zoomDir(dir) {
 		h = parseFloat(document.getElementById("svg--map").clientHeight);
 		w = parseFloat(document.getElementById("svg--map").clientWidth);
-
-		console.log(dir, h, w);
 
 		if (dir == "in") {
 			var newZoom = zoom.scale() * 1.5;
