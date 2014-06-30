@@ -1,0 +1,55 @@
+.container {
+	width: 90%;
+	margin: 0 auto;
+	background: azure;
+}
+svg {
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	height: 100%;
+}
+
+.background {
+	fill: none;
+	pointer-events: all;
+}
+
+.subunit {
+	-ms-touch-action: none;
+	cursor: pointer;
+}
+
+.subunit.hover {
+	fill: #C1CEBE;
+}
+
+.subunit.active {
+	fill: #A6CF9C;
+}
+
+button {
+	background-color: rgba(118,183,138,1);
+	border: none;
+	padding: 10px;
+	position: relative;
+	font-size: 12px;
+	color: #fff;
+	border-radius: 8px;
+	box-shadow: 3px 3px 0px rgba(118,183,138,0.3);
+	transition: 0.1s;
+	outline: 0;
+}
+
+button:hover,
+button:focus {
+	border:none;
+	outline: 0;
+}
+
+button:active {
+	box-shadow: 0 0 0 0 rgba(0,0,0,0.3);
+	-webkit-transform: translate(1px, 4px);
+		-ms-transform: translate(1px, 4px);
+		transform: translate(1px, 4px);
+	outline: 0;
+ }
+
