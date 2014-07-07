@@ -1,0 +1,52 @@
+ST,State,Score,PossiblePoints,ScorePercentage,MinorImmunity
+AL,Alabama,16,25,64.00%,No
+AK,Alaska,18.875,25,75.50%,No
+AZ,Arizona,20.5,25,82.00%,No
+AR,Arkansas,20,25,80.00%,No
+CA,California,4,25,16.00%,No
+CO,Colorado,20,25,80.00%,No
+CT,Connecticut,15,25,60.00%,"Yes, if minor is under 16"
+DE,Delaware,17,25,68.00%,No
+DC,District of Columbia,16.5,25,66.00%,No
+FL,Florida,18,25,72.00%,No
+GA,Georgia,24,25,96.00%,No
+HI,Hawaii,14.5,25,58.00%,No
+ID,Idaho,18,25,72.00%,No
+IL,Illinois,20.5,25,82.00%,Yes
+IN,Indiana,13.5,25,54.00%,No
+IA,Iowa,20,25,80.00%,No
+KS,Kansas,19,25,76.00%,No
+KY,Kentucky,18,25,72.00%,Yes
+LA,Louisiana,25,25,100.00%,Yes
+ME,Maine,14,25,56.00%,No
+MD,Maryland,17.5,25,70.00%,No
+MA,Massachusetts,21,25,84.00%,No
+MI,Michigan,6.5,25,26.00%,"Yes, if minor is under 16"
+MN,Minnesota,18,25,72.00%,Yes
+MS,Mississippi,24.5,25,98.00%,Yes
+MO,Missouri,22.5,25,90.00%,No
+MT,Montana,22,25,88.00%,No
+NE,Nebraska,20,25,80.00%,Yes
+NV,Nevada,23.5,25,94.00%,No
+NH,New Hampshire,16.5,25,66.00%,No
+NJ,New Jersey,21,25,84.00%,No
+NM,New Mexico,13,25,52.00%,No
+NY,New York,11,25,44.00%,No
+NC,North Carolina,22,25,88.00%,Yes
+ND,North Dakota,16.5,25,66.00%,No
+OH,Ohio,17,25,68.00%,No
+OK,Oklahoma,16.5,25,66.00%,No
+OR,Oregon,20,25,80.00%,No
+PA,Pennsylvania,14,25,56.00%,No
+RI,Rhode Island,20.5,25,82.00%,No
+SC,South Carolina,20,25,80.00%,No
+SD,South Dakota,15,25,60.00%,No
+TN,Tennessee,24.5,25,98.00%,Yes
+TX,Texas,23.5,25,94.00%,No
+UT,Utah,20.5,25,82.00%,No
+VT,Vermont,16,25,64.00%,Yes
+VA,Virginia,15,25,60.00%,No
+WA,Washington,24,25,96.00%,No
+WV,West Virginia,18,25,72.00%,No
+WI,Wisconsin,21,25,84.00%,No
+WY,Wyoming,15.5,25,62.00%,No

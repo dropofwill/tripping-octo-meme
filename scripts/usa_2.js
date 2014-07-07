@@ -5,8 +5,12 @@
 			hover = d3.select(null),
 			locked = false,
 			listSubunits = [],
-			//scaledColors = ['#f0ffff', '#bbb9d8', '#8679b2', '#503b8c', '#000066'],
-			scaledColors =['#f0ffff', '#c1c6e1', '#938fc4', '#635ba6', '#2c2c88'], 
+			scaledColors = ['#f0ffff', '#bbb9d8', '#8679b2', '#503b8c', '#000066'],
+			scaledHash ={   'A-Y': '#f0ffff',
+											'B-Y': '#c1c6e1',
+											'C-Y': '#938fc4',
+											'D-Y': '#635ba6',
+											'F-Y': '#2c2c88'},
 			scaledFills = scaledColors.slice(0),
 			lock_btn = document.getElementById("lock"),
 			toggle_btn = document.getElementById("toggle"),
@@ -53,9 +57,9 @@
 	createPatterns();
 
 	function createPatterns() {
-		Array.prototype.forEach.call(scaledColors, function(el, i) {
-			var name = "pat_" + el.toString().replace(/\#/,"");
-			scaledFills.push("url(#" + name + ")");
+		for (var key in scaledHash) {
+			var name = key.replace(/\-Y/,"-N");
+			scaledHash[name] = "url(#" +name+ ")";
 
 			pattern = defs.append("pattern")
 				.attr("id", name)
@@ -70,12 +74,56 @@
 						.attr("y1", "0")
 						.attr("x2", "0")
 						.attr("y2", "10")
-						.attr("style", "stroke-width:17;stroke:" + el.toString() + ";");
-		});
+						.attr("style", "stroke-width:17;stroke:" + scaledHash[key] + ";");
+		}
+		//Array.prototype.forEach.call(scaledColors, function(el, i) {
+			//var name = "pat_" + el.toString().replace(/\#/,"");
+			//scaledFills.push("url(#" + name + ")");
+//
+			//pattern = defs.append("pattern")
+				//.attr("id", name)
+				//.attr("patternUnits", "userSpaceOnUse")
+				//.attr("x", "0")
+				//.attr("y", "0")
+				//.attr("width", "10")
+				//.attr("height", "10")
+				//.attr("patternTransform", "rotate(45 0 0)")
+					//.append("line")
+						//.attr("x1", "0")
+						//.attr("y1", "0")
+						//.attr("x2", "0")
+						//.attr("y2", "10")
+						//.attr("style", "stroke-width:17;stroke:" + el.toString() + ";");
+		//});
+		console.log(scaledHash);
 	}
 
-	// Choose a pattern for a given number (probably random)
 	function choosePattern(ith) {
+		i = ith%scaledFills.length;
+		return scaledFills[i];
+	}
+
+	function retrieveGrade(grade,immunity) {
+		switch (grade,immunity) {
+			case 5:
+				return immunity ? "A-Y" : "A-N";
+			case 4:
+				return immunity ? "B-Y" : "B-N";
+			case 3:
+				return immunity ? "C-Y" : "C-N";
+			case 2:
+				return immunity ? "D-Y" : "D-N";
+			case 1:
+				return immunity ? "F-Y" : "F-N";
+			default:
+				return "azure";
+		}
+	}
+
+	
+
+	// Choose a pattern for a given number (probably random)
+	function choosePatternRandom(ith) {
 		i = ith%scaledFills.length;
 		return scaledFills[i];
 	}
@@ -89,7 +137,7 @@
 
 
 	// Load the actual map data
-	d3.json("data/usa_states_500k_topo.json", function(error, map) {
+	d3.json("data/usa_states_500k_topo_codes.json", function(error, map) {
 		if (error) return console.error(error);
 
 		// The individual states/countries
@@ -98,8 +146,7 @@
 		var unit = topojson.feature(map, map.objects.states);
 
 		//console.log(subunits);
-		//console.log(map);
-		//console.log(topojson.feature(map, map.objects.states));
+		console.log(topojson.feature(map, map.objects.states));
 		//console.log(unit);
 		
 		// Generate a random number for each to kick off the states
@@ -128,7 +175,18 @@
 						countrySelector.appendChild(el);
 	
 						return "subunit " + name; })
-				.attr("fill", function() { i++; return choosePattern(i); })
+				.attr("fill", function(d) {
+						i++;
+						var score = d.properties.Score/5;
+						var immunity = d.properties.MinorImmunity.toLowerCase();
+						//if ( ~immunity.indexOf("yes")) {
+							//immunity = true;
+						//} else if (~immunity.indexOf("no") {
+							//immunity = false;
+						//}	
+						console.log(score, immunity);
+						console.log(retrieveGrade(Math.round(score, immunity)));
+						return choosePattern(i); })
 				.attr("stroke", "#999")
 				.attr("stroke-width", 1)
 				.attr("stroke-linejoin", "round")
@@ -149,7 +207,6 @@
 				.attr("class", "case_dot")
 				.attr("cx", function(d) {
 					var proj = projection([d["Lon"], d["Lat"]]);
-					console.log(proj[0]);
 					return proj[0];
 				})
 				.attr("cy", function(d) {
