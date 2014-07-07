@@ -137,6 +137,31 @@
 				.on("mouseout", mouseout);
 	});
 
+	
+	d3.csv("buyer_processing/buyers_export_2.csv", function(error, buyers) {
+		if (error) return console.error(error);
+		console.log(buyers);
+
+		features.selectAll("circle")
+			.data(buyers)
+				.enter()
+				.append("circle")
+				.attr("class", "case_dot")
+				.attr("cx", function(d) {
+					var proj = projection([d["Lon"], d["Lat"]]);
+					console.log(proj[0]);
+					return proj[0];
+				})
+				.attr("cy", function(d) {
+					var proj = projection([d["Lon"], d["Lat"]]);
+					return proj[1];
+				})
+				.attr("r", 3)
+				.attr("stroke", "#fff")
+				.attr("stroke-width", "1")
+				.on("click", function(d) {console.log(d)});
+	});
+
 	d3.select("#reset").on("click", reset);
 	d3.select("#lock").on("click", lock);
 	d3.select("#zoom_in").on("click", function() { zoomDir("in"); });
@@ -153,6 +178,9 @@
 
 	function zoomed() {
 		svg.selectAll("path")
+			.attr("transform", "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")");
+
+		svg.selectAll("circle")
 			.attr("transform", "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")");
 
 		svg.selectAll(".subunit")
