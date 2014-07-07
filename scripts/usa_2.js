@@ -125,8 +125,7 @@
 	// Choose a pattern for a given number (probably random)
 	function choosePatternRandom(ith) {
 		i = ith%scaledFills.length;
-		return scaledFills[i];
-	}
+		return scaledFills[i]; }
 
 	// Choose a fill color for a given number (probably random)
 	function chooseColor(ith, colors) {
@@ -152,14 +151,14 @@
 		// Generate a random number for each to kick off the states
 		var i = Math.floor(Math.random() * 10) + 1;
 
-		features.append("path")
-			.datum(unit)
-				.attr("class", "country")
-				.attr("d", path)
-				.attr("stroke", "#ddd")
-				.attr("fill", "#ddd")
-				.attr("stroke-width", 7)
-				.attr("stroke-linejoin", "round");
+		//features.append("path")
+			//.datum(unit)
+				//.attr("class", "country")
+				//.attr("d", path)
+				//.attr("stroke", "#ddd")
+				//.attr("fill", "#ddd")
+				//.attr("stroke-width", 7)
+				//.attr("stroke-linejoin", "round");
 
 		features.selectAll(".subunit")
 				.data(subunits)
