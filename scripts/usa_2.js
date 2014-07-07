@@ -74,7 +74,7 @@
 						.attr("y1", "0")
 						.attr("x2", "0")
 						.attr("y2", "10")
-						.attr("style", "stroke-width:17;stroke:" + scaledHash[key] + ";");
+						.attr("style", "stroke-width:15;stroke:" + scaledHash[key] + ";");
 		}
 		//Array.prototype.forEach.call(scaledColors, function(el, i) {
 			//var name = "pat_" + el.toString().replace(/\#/,"");
@@ -98,13 +98,13 @@
 		console.log(scaledHash);
 	}
 
-	function choosePattern(ith) {
-		i = ith%scaledFills.length;
-		return scaledFills[i];
+	function choosePattern(name) {
+		return scaledHash[name];
 	}
 
 	function retrieveGrade(grade,immunity) {
-		switch (grade,immunity) {
+			console.log(grade, immunity);
+		switch (grade) {
 			case 5:
 				return immunity ? "A-Y" : "A-N";
 			case 4:
@@ -176,17 +176,17 @@
 	
 						return "subunit " + name; })
 				.attr("fill", function(d) {
-						i++;
 						var score = d.properties.Score/5;
 						var immunity = d.properties.MinorImmunity.toLowerCase();
-						//if ( ~immunity.indexOf("yes")) {
-							//immunity = true;
-						//} else if (~immunity.indexOf("no") {
-							//immunity = false;
-						//}	
-						console.log(score, immunity);
-						console.log(retrieveGrade(Math.round(score, immunity)));
-						return choosePattern(i); })
+
+						if ( ~immunity.indexOf("yes") ) {
+							 immunity = true;
+						} else {
+							 immunity = false;
+						}	
+						grade = retrieveGrade(Math.round(score),immunity);
+						return choosePattern(grade);
+				})
 				.attr("stroke", "#999")
 				.attr("stroke-width", 1)
 				.attr("stroke-linejoin", "round")
