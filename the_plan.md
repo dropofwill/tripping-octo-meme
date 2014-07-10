@@ -17,7 +17,8 @@
 
 "Parallax scrolling to educate through narative" -- meaning animation or flyover text/images
 
-Message:
+
+Intended Message (need to synthesize with current creative):
 
 1. Children are being sold for sex.
 
@@ -40,3 +41,15 @@ Message:
 
 10. Legal Disclaimer -> Enter report/home page
 
+
+Creative Message:
+
+1. 80% of solicitation arrests, the buyer walks free.
+
+2. Traffickers get rich. Victims get arrested. Buyers drive home/Buyers go free. (Ties in with 1-3,5)
+
+3. It is elementary. The more buyers demand, the more victims are supplied. (Ties in with 5)
+
+4. There is no easy way to spot an underage sex buyer. (Ties in with (Ties in with 4)
+
+5. There is only one way to close the store. Stop the buyers from shopping there. (Ties in with 7)
