@@ -18,7 +18,7 @@
 "Parallax scrolling to educate through narative" -- meaning animation or flyover text/images
 
 
-Intended Message (need to synthesize with current creative):
+*Intended Message (need to synthesize with current creative):*
 
 1. Children are being sold for sex.
 
@@ -42,7 +42,7 @@ Intended Message (need to synthesize with current creative):
 10. Legal Disclaimer -> Enter report/home page
 
 
-Creative Message:
+*Creative Message:*
 
 1. 80% of solicitation arrests, the buyer walks free.
 
