@@ -1,12 +1,19 @@
 	// Set Aspect Ratio in pixels
 	var width = 960,
 			height = 500,
+			dotRadius = 3,
+			dotBorder = 1,
+
 			active = d3.select(null),
 			hover = d3.select(null),
 			locked = false,
 			listSubunits = [],
 
-			scaledHash ={		'A-N':'#ffffff', 'B-N': '#f8c9bc', 'C-N': '#e8927d', 'D-N': '#d15b41', 'F-N': '#b40d04' }
+			//scaledHash = { 'A-N': '#21313E','B-N': '#20575F','B-N': '#268073','C-N': '#53A976','D-N': '#98CF6F','F-N': '#EFEE69'},
+			//scaledHash = { 'A-N': '#009962','B-N':  '#9dcc4c','C-N':  '#E8E834','D-N':  '#e09500','F-N':  '#b40d04'},
+			//scaledHash = { 'A-N': '#009962', 'B-N':  '#9acc6d', 'C-N':  '#ffff76', 'D-N':  '#e1943a', 'F-N':  '#b40d04'},
+			//scaledHash = { 'A-N': '#547949', 'B-N':  '#75bc41', 'C-N':  '#ffe14d', 'D-N':  '#ff454d', 'F-N':  '#ad2d30'},
+			//scaledHash ={		'A-N':'#ffffff', 'B-N': '#f8c9bc', 'C-N': '#e8927d', 'D-N': '#d15b41', 'F-N': '#b40d04' }
 
 			//scaledHash ={		'A-N':'#ffc5c5','B-N':'#e79990','C-N': '#cc6d5f','D-N': '#af4030','F-N': '#8e0000' },
 
@@ -14,7 +21,7 @@
 			//scaledHash ={   'A-N': '#fee5d9', 'B-N': '#fcae91', 'C-N': '#fb6a4a', 'D-N': '#de2d26', 'F-N': ' #a50f15' },
 
 			// gray - red -- cold
-			//scaledHash ={   'A-N': '#d3d3d3', 'B-N': '#d7a9a3', 'C-N': '#d37f74', 'D-N': '#ca5148', 'F-N': '#bb071f'},
+			scaledHash ={   'A-N': '#d3d3d3', 'B-N': '#d7a9a3', 'C-N': '#d37f74', 'D-N': '#ca5148', 'F-N': '#bb071f'},
 			
 			// white - blue/purple
 			//scaledHash ={   'A-N': '#f0ffff', 'B-N': '#c1c6e1', 'C-N': '#938fc4', 'D-N': '#635ba6', 'F-N': '#2c2c88'},
@@ -35,7 +42,7 @@
 	var zoom = d3.behavior.zoom()
 		.scale(1)
 		.translate([0,0])
-    .scaleExtent([1, 6])
+    .scaleExtent([1, 12])
     .on("zoom", zoomed);
 
 	// Add the svg to the .container element, stop event propogation
@@ -50,20 +57,22 @@
 		.call(zoom.event)
 
 	// A rectangle to reset the view, drawn behind the map
-	svg.append("rect")
-		.attr("class", "background")
-		.attr("width", width)
-		.attr("height", height)
-		.on("click", reset);
+	//svg.append("rect")
+		//.attr("class", "background")
+		//.attr("width", width)
+		//.attr("height", height)
+		//.on("click", reset);
 		
+	// Create a pattern for each color and push it to an array to select from
+	var defs = svg.append("defs")
+
 	// Group the map features
 	var features = svg.append("g");
-
-	// Create a pattern for each color and push it to an array to select from
-	var defs = features.append("defs")
+	var dots = svg.append("g");
 
 	createPatterns();
 	loadMapData();
+	plotBuyerData();
 
 	function createPatterns() {
 		for (var key in scaledHash) {
@@ -116,7 +125,6 @@
 		}
 		else {
 			console.log(grade);
-			return "azure";
 		}
 	}
 
@@ -180,7 +188,6 @@
 					.on("mouseout", mouseout);
 		});
 		
-		plotBuyerData();
 	}
 	
 	function plotBuyerData() {
@@ -188,7 +195,7 @@
 			if (error) return console.error(error);
 			console.log(buyers);
 
-			features.selectAll("circle")
+			dots.selectAll("circle")
 				.data(buyers)
 					.enter()
 					.append("circle")
@@ -201,9 +208,9 @@
 						var proj = projection([d["Lon"], d["Lat"]]);
 						return proj[1];
 					})
-					.attr("r", 3)
+					.attr("r", dotRadius)
 					.attr("stroke", "#fff")
-					.attr("stroke-width", "1")
+					.attr("stroke-width", dotBorder)
 					.on("click", function(d) {console.log(d)});
 		});
 	}
@@ -227,15 +234,31 @@
 			.attr("transform", "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")");
 
 		svg.selectAll("circle")
-			//,attr("r", function() { return parseFloat(this.getAttribute("r") / d3.event.scale ) })
-			.attr("transform", "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")");
+			// Shfit scale up 1 and then contract to give the same size at scale = 1:
+			// Default is the size at scale = 1, x is scaling factor of the map
+			// z is the compression factor, y is the output
+			//
+			// Default/x = y;
+			// Default/x + 1 = y;
+			// z * Default/x + 1 = y:
+			// So: z * 3/x + 1 = y;
+			// z * 3/1 + 1 = 3;
+			// 3z + 1 = 3; z = 2/3;
+			// Pluggin in: (2/3)*(3/x) + 1 = y
+			// Simplified: x + 2 / x = y
+			.attr("r", function() { return (d3.event.scale + 2) / d3.event.scale; })
+			.attr("stroke-width", function() { return 0.25 + (0.75 / d3.event.scale); })
+			.attr("transform", function() {
+				return "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")";
+			});
 
 		svg.selectAll(".subunit")
 			.style("stroke-width", 1/ d3.event.scale + "px");
 
 		svg.selectAll(".country")
 			.style("stroke-width", function() {
-					return parseFloat(this.getAttribute("stroke-width") / d3.event.scale);
+					var size = parseFloat(this.getAttribute("stroke-width") / d3.event.scale);
+					return size;
 			});
 	}
 

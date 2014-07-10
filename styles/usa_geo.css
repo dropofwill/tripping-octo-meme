@@ -1,7 +1,7 @@
 .container {
 	width: 90%;
 	margin: 0 auto;
-	background: azure;
+/*	background: azure;*/
 }
 svg {
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -17,14 +17,14 @@ svg {
 	-ms-touch-action: none;
 	cursor: pointer;
 }
-
+/*
 .subunit.hover {
 	fill: #C1CEBE;
 }
 
 .subunit.active {
 	fill: #A6CF9C;
-}
+}*/
 
 button {
 	background-color: rgba(118,183,138,1);
