@@ -55,3 +55,41 @@
 4. There is no easy way to spot an underage sex buyer. (Ties in with (Ties in with 4)
 
 5. There is only one way to close the store. Stop the buyers from shopping there. (Ties in with 7)
+
+
+### Report/Home Page
+
+[Home Page content](https://www.dropbox.com/sh/5r0jz326jestk27/AADmTQrYfKm_Dwa8ZaExgyzfa/Home%20Page)
+
+**Content:**
+
+Featured Buyers
+
+Major Insights from the Report
+
+Quotes
+
+National Map Intro
+
+
+### Resources
+
+[List of Resources](https://www.dropbox.com/sh/5r0jz326jestk27/AAC-zi17VmP7F_QSD4vjwTJaa/Resource%20Page)
+
+Basically each resource is probably going to need a thumbnail and a little explanation blurb. Legal briefs might need to each be their own item?
+
+**Current List**
+
+2013 Protected Innocence Challenge
+
+Demanding Justice on Vimeo
+
+Demanding Justice Fact Sheet
+
+Demanding Justice Benchmark Assesment
+
+Shared Hope Criminal Liability for Buyers of Sex Acts with Minors
+
+Section 2 Issue Briefs: Guide and 10 docs
+
+
