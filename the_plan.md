@@ -13,6 +13,30 @@
 
 
 ### Root/Landing Page
-[Relevant Docs](https://www.dropbox.com/sh/5r0jz326jestk27/AAA4LwC_w3rt71NNSTe24Dkla/Landing%20Page/Landing%20page%20copy%20%282%29_SV.docx)
+[Landing Page Copy Doc](https://www.dropbox.com/sh/5r0jz326jestk27/AAA4LwC_w3rt71NNSTe24Dkla/Landing%20Page/Landing%20page%20copy%20%282%29_SV.docx)
+
 "Parallax scrolling to educate through narative" -- meaning animation or flyover text/images
+
+Message:
+
+1. Children are being sold for sex.
+
+2. Buyers, not just traffickers
+
+3. Buyers are people who give something of value to have sex with a minor.
+
+4. Buyers hide in plain site among us
+
+5. Trafficking only stops when the demand for it does
+
+6. Quotes from victims:
+		Super Bowl, child porn, strip club, and demand insight.
+
+7. Buyers turn our children into commodities, which causes their victimization.
+
+8. Historically this crime has been hidden. This site tracks and brings it to light.
+
+9. Is your state #DemandingJustice? Are you? (footage? twitter?)
+
+10. Legal Disclaimer -> Enter report/home page
 
