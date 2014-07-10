@@ -1,6 +1,6 @@
-### The Plan
+## The Plan
 
-## Route Structure
+### Route Structure
 | Routes						| Name/Explanation				| Purpose |
 |-------------------|-------------------------|---------|
 | /									| root/landing page				| Engage Viewers and Gateway through Legal Disc. |
