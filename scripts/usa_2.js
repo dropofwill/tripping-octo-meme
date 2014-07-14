@@ -13,7 +13,7 @@
 			//scaledHash = { 'A-N': '#009962','B-N':  '#9dcc4c','C-N':  '#E8E834','D-N':  '#e09500','F-N':  '#b40d04'},
 			//scaledHash = { 'A-N': '#009962', 'B-N':  '#9acc6d', 'C-N':  '#ffff76', 'D-N':  '#e1943a', 'F-N':  '#b40d04'},
 			//scaledHash = { 'A-N': '#547949', 'B-N':  '#75bc41', 'C-N':  '#ffe14d', 'D-N':  '#ff454d', 'F-N':  '#ad2d30'},
-			//scaledHash ={		'A-N':'#ffffff', 'B-N': '#f8c9bc', 'C-N': '#e8927d', 'D-N': '#d15b41', 'F-N': '#b40d04' }
+			scaledHash ={		'A-N':'#ffffff', 'B-N': '#f8c9bc', 'C-N': '#e8927d', 'D-N': '#d15b41', 'F-N': '#b40d04' }
 
 			//scaledHash ={		'A-N':'#ffc5c5','B-N':'#e79990','C-N': '#cc6d5f','D-N': '#af4030','F-N': '#8e0000' },
 
@@ -21,7 +21,7 @@
 			//scaledHash ={   'A-N': '#fee5d9', 'B-N': '#fcae91', 'C-N': '#fb6a4a', 'D-N': '#de2d26', 'F-N': ' #a50f15' },
 
 			// gray - red -- cold
-			scaledHash ={   'A-N': '#d3d3d3', 'B-N': '#d7a9a3', 'C-N': '#d37f74', 'D-N': '#ca5148', 'F-N': '#bb071f'},
+			//scaledHash ={   'A-N': '#d3d3d3', 'B-N': '#d7a9a3', 'C-N': '#d37f74', 'D-N': '#ca5148', 'F-N': '#bb071f'},
 			
 			// white - blue/purple
 			//scaledHash ={   'A-N': '#f0ffff', 'B-N': '#c1c6e1', 'C-N': '#938fc4', 'D-N': '#635ba6', 'F-N': '#2c2c88'},
@@ -44,6 +44,12 @@
 		.translate([0,0])
     .scaleExtent([1, 12])
     .on("zoom", zoomed);
+
+	// Force setup for keeping the circles from overlapping
+	var force = d3.layout.force()
+			.charge(0)
+			.gravity(0)
+			.size([width, height]);
 
 	// Add the svg to the .container element, stop event propogation
 	var svg = d3.select(".container").append("svg")
@@ -212,6 +218,7 @@
 					.attr("stroke", "#fff")
 					.attr("stroke-width", dotBorder)
 					.on("click", function(d) {console.log(d)});
+
 		});
 	}
 
