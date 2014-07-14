@@ -46,15 +46,13 @@
 
 **Creative Message:**
 
-1. 80% of solicitation arrests, the buyer walks free.
+1. There is no easy way to spot a buyer. (4)
 
-2. Traffickers get rich. Victims get arrested. Buyers drive home/Buyers go free. (Ties in with 1-3,5)
+2. Trafficker gets rich. Victim gets arrested. Buyer goes home. (1-3)
 
-3. It is elementary. The more buyers demand, the more victims are supplied. (Ties in with 5)
+3. It is elementary. The more buyers demand, the more victims are supplied. (5)
 
-4. There is no easy way to spot an underage sex buyer. (Ties in with (Ties in with 4)
-
-5. There is only one way to close the store. Stop the buyers from shopping there. (Ties in with 7)
+4. There is only one way to close the store. Stop the buyers from shopping there. (7) 
 
 
 ### Report/Home Page
